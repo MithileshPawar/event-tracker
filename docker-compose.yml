@@ -1,0 +1,29 @@
+services:
+  postgres:
+    image: postgres:latest
+    container_name: event-tracker-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: event_tracker
+      POSTGRES_USER: event_user
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      # Optional: Configure timezone/locale if needed
+      TZ: UTC-5
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - event-tracker-net
+
+volumes:
+  db_data:
+
+networks:
+  event-tracker-net:
+    driver: bridge

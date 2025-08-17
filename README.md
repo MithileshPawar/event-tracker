@@ -1,2 +1,3 @@
 # event-tracker
-Spring boot project.
+
+Spring Boot project.
